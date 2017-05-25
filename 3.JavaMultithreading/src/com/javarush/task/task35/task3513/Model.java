@@ -1,8 +1,6 @@
 package com.javarush.task.task35.task3513;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by dell on 24-May-17.
@@ -191,14 +189,14 @@ public class Model {
     public boolean canMove() {
         if(!getEmptyTiles().isEmpty())
             return true;
-        for(int i = 0; i < gameTiles.length; i++) {
-            for(int j = 1; j < gameTiles.length; j++) {
+        for(int i = 0; i < FIELD_WIDTH; i++) {
+            for(int j = 1; j < FIELD_WIDTH; j++) {
                 if(gameTiles[i][j].value == gameTiles[i][j-1].value)
                     return true;
             }
         }
-        for(int j = 0; j < gameTiles.length; j++) {
-            for(int i = 1; i < gameTiles.length; i++) {
+        for(int j = 0; j < FIELD_WIDTH; j++) {
+            for(int i = 1; i < FIELD_WIDTH; i++) {
                 if(gameTiles[i][j].value == gameTiles[i-1][j].value)
                     return true;
             }
@@ -208,6 +206,59 @@ public class Model {
 
     Tile[][] getGameTiles() {
         return gameTiles;
+    }
+
+    void randomMove() {
+        switch (((int) (Math.random() * 100)) % 4) {
+            case 0:
+                left();
+                break;
+            case 1:
+                right();
+                break;
+            case 2:
+                up();
+                break;
+            case 3:
+                down();
+                break;
+        }
+    }
+
+    void autoMove() {
+        PriorityQueue<MoveEfficiency> queue = new PriorityQueue<MoveEfficiency>(4, Collections.reverseOrder());
+        queue.offer(getMoveEfficiency(this::left));
+        queue.offer(getMoveEfficiency(this::right));
+        queue.offer(getMoveEfficiency(this::up));
+        queue.offer(getMoveEfficiency(this::down));
+        queue.poll().getMove().move();
+    }
+
+    boolean hasBoardChanged() {
+        return calculateTilesWaight(gameTiles) != calculateTilesWaight(previousStates.peek());
+    }
+
+    private int calculateTilesWaight(Tile[][] tiles) {
+        int res = 0;
+        for(int j = 0; j < FIELD_WIDTH; j++) {
+            for(int i = 0; i < FIELD_WIDTH; i++) {
+                res += tiles[i][j].value;
+            }
+        }
+        return res;
+    }
+
+    MoveEfficiency getMoveEfficiency(Move move) {
+        MoveEfficiency res;
+        move.move();
+        if (!hasBoardChanged()) {
+            res = new MoveEfficiency(-1, 0, move);
+        }
+        else {
+            res = new MoveEfficiency(getEmptyTiles().size(), score, move);
+        }
+        rollback();
+        return res;
     }
 
     @Override
