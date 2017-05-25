@@ -2,6 +2,7 @@ package com.javarush.task.task35.task3513;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by dell on 24-May-17.
@@ -11,10 +12,41 @@ public class Model {
     private Tile[][] gameTiles;
     int score;
     int maxTile;
-
+    Stack<Tile[][]> previousStates = new Stack<Tile[][]>();
+    Stack<Integer> previousScores = new Stack<Integer>();
+    boolean  isSaveNeeded = true;
 
     public Model() {
         resetGameTiles();
+    }
+
+    private void saveState(Tile[][] tiles, int score) {
+        isSaveNeeded = false;
+
+        //previousStates.push(cloneGameTiles(tiles));
+        previousStates.push(tiles);
+        previousScores.push(score);
+    }
+
+    private Tile[][] cloneGameTiles(Tile[][] tiles) {
+        Tile[][] t = tiles;
+        if (t == null) {
+            t = gameTiles;
+        }
+        Tile[][] tilesCopy = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                tilesCopy[i][j] = new Tile(t[i][j].value);
+            }
+        }
+        return tilesCopy;
+    }
+
+    public void rollback() {
+        if (!previousStates.isEmpty() && !previousScores.isEmpty()) {
+            gameTiles = previousStates.pop();
+            score = previousScores.pop();
+        }
     }
 
     void resetGameTiles() {
@@ -56,9 +88,9 @@ public class Model {
         for (int j = 0; j < FIELD_WIDTH - 1; j++) {
             for (int i = FIELD_WIDTH - 1; i > j; i--) {
                 if (tiles[i - 1].isEmpty() && !tiles[i].isEmpty()) {
-                    tiles[i - 1].value = tiles[i].value;
-                    tiles[i].value = 0;
-                    res = true;
+                        tiles[i - 1].value = tiles[i].value;
+                        tiles[i].value = 0;
+                        res = true;
                 }
             }
         }
@@ -69,16 +101,16 @@ public class Model {
         boolean res = false;
         for (int i = 1; i < FIELD_WIDTH; i++) {
             if (tiles[i-1].value == tiles[i].value && !tiles[i].isEmpty()) {
-                tiles[i-1].value *= 2;
-                if (tiles[i-1].value > maxTile) {
-                    maxTile = tiles[i-1].value;
-                }
-                score += tiles[i-1].value;
-                for (int j = i+1; j < FIELD_WIDTH; j++) {
-                    tiles[j-1].value = tiles[j].value;
-                }
-                tiles[FIELD_WIDTH-1].value = 0;
-                res = true;
+                    tiles[i - 1].value *= 2;
+                    if (tiles[i - 1].value > maxTile) {
+                        maxTile = tiles[i - 1].value;
+                    }
+                    score += tiles[i - 1].value;
+                    for (int j = i + 1; j < FIELD_WIDTH; j++) {
+                        tiles[j - 1].value = tiles[j].value;
+                    }
+                    tiles[FIELD_WIDTH - 1].value = 0;
+                    res = true;
             }
         }
         return res;
@@ -86,22 +118,97 @@ public class Model {
 
     void left(){
         int changeCount = 0;
+        Tile[][] srcState = cloneGameTiles(gameTiles);
+        int srcScore = score;
         for (int i=0; i < FIELD_WIDTH; i++) {
-            boolean compressed = compressTiles(gameTiles[i]);
-            boolean merged  = mergeTiles(gameTiles[i]);
-            if (
-                    compressed
-                            ||
-                            merged
-                    ) {
+            if (compressTiles(gameTiles[i]) | mergeTiles(gameTiles[i])) {
                 changeCount++;
             }
         }
         if (changeCount > 0) {
             addTile();
+            saveState(srcState, srcScore);
         }
     }
 
+    void right(){
+        int changeCount = 0;
+        Tile[][] srcState = cloneGameTiles(gameTiles);
+        int srcScore = score;
+        Tile[] tiles = new Tile[FIELD_WIDTH];
+        for (int i=0; i < FIELD_WIDTH; i++) {
+            for (int j = FIELD_WIDTH-1; j >= 0; j--) {
+                tiles[FIELD_WIDTH - 1 - j] = gameTiles[i][j];
+            }
+            if (compressTiles(tiles) | mergeTiles(tiles)) {
+                changeCount++;
+            }
+        }
+        if (changeCount > 0) {
+            addTile();
+            saveState(srcState, srcScore);
+        }
+    }
+
+    void down(){
+        int changeCount = 0;
+        Tile[][] srcState = cloneGameTiles(gameTiles);
+        int srcScore = score;
+        Tile[] tiles = new Tile[FIELD_WIDTH];
+        for (int i=0; i < FIELD_WIDTH; i++) {
+            for (int j = FIELD_WIDTH-1; j >= 0; j--) {
+                tiles[FIELD_WIDTH - 1 - j] = gameTiles[j][i];
+            }
+            if (compressTiles(tiles) | mergeTiles(tiles)) {
+                changeCount++;
+            }
+        }
+        if (changeCount > 0) {
+            addTile();
+            saveState(srcState, srcScore);
+        }
+    }
+
+    void up(){
+        int changeCount = 0;
+        Tile[][] srcState = cloneGameTiles(gameTiles);
+        int srcScore = score;
+        Tile[] tiles = new Tile[FIELD_WIDTH];
+        for (int i=0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                tiles[j] = gameTiles[j][i];
+            }
+            if (compressTiles(tiles) | mergeTiles(tiles)) {
+                changeCount++;
+            }
+        }
+        if (changeCount > 0) {
+            addTile();
+            saveState(srcState, srcScore);
+        }
+    }
+
+    public boolean canMove() {
+        if(!getEmptyTiles().isEmpty())
+            return true;
+        for(int i = 0; i < gameTiles.length; i++) {
+            for(int j = 1; j < gameTiles.length; j++) {
+                if(gameTiles[i][j].value == gameTiles[i][j-1].value)
+                    return true;
+            }
+        }
+        for(int j = 0; j < gameTiles.length; j++) {
+            for(int i = 1; i < gameTiles.length; i++) {
+                if(gameTiles[i][j].value == gameTiles[i-1][j].value)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    Tile[][] getGameTiles() {
+        return gameTiles;
+    }
 
     @Override
     public String toString() {
