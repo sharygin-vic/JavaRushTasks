@@ -2,7 +2,6 @@ package com.javarush.task.task35.task3513;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by dell on 24-May-17.
@@ -52,20 +51,24 @@ public class Model {
         return res;
     }
 
-    private void compressTiles(Tile[] tiles){
-        for (int j = 0; j < FIELD_WIDTH-1; j++) {
+    private boolean compressTiles(Tile[] tiles){
+        boolean res = false;
+        for (int j = 0; j < FIELD_WIDTH - 1; j++) {
             for (int i = FIELD_WIDTH - 1; i > j; i--) {
                 if (tiles[i - 1].isEmpty() && !tiles[i].isEmpty()) {
                     tiles[i - 1].value = tiles[i].value;
                     tiles[i].value = 0;
+                    res = true;
                 }
             }
         }
+        return res;
     }
 
-    private void mergeTiles(Tile[] tiles) {
+    private boolean mergeTiles(Tile[] tiles) {
+        boolean res = false;
         for (int i = 1; i < FIELD_WIDTH; i++) {
-            if (tiles[i-1].value == tiles[i].value) {
+            if (tiles[i-1].value == tiles[i].value && !tiles[i].isEmpty()) {
                 tiles[i-1].value *= 2;
                 if (tiles[i-1].value > maxTile) {
                     maxTile = tiles[i-1].value;
@@ -75,7 +78,39 @@ public class Model {
                     tiles[j-1].value = tiles[j].value;
                 }
                 tiles[FIELD_WIDTH-1].value = 0;
+                res = true;
             }
         }
+        return res;
+    }
+
+    void left(){
+        int changeCount = 0;
+        for (int i=0; i < FIELD_WIDTH; i++) {
+            boolean compressed = compressTiles(gameTiles[i]);
+            boolean merged  = mergeTiles(gameTiles[i]);
+            if (
+                    compressed
+                            ||
+                            merged
+                    ) {
+                changeCount++;
+            }
+        }
+        if (changeCount > 0) {
+            addTile();
+        }
+    }
+
+
+    @Override
+    public String toString() {
+        String res = String.format("score=%d  maxTile=%d%n%10d  %10d  %10d  %10d%n%10d  %10d  %10d  %10d%n%10d  %10d  %10d  %10d%n%10d  %10d  %10d  %10d%n==============%n",
+                score, maxTile,
+                gameTiles[0][0].value, gameTiles[0][1].value, gameTiles[0][2].value, gameTiles[0][3].value,
+                gameTiles[1][0].value, gameTiles[1][1].value, gameTiles[1][2].value, gameTiles[1][3].value,
+                gameTiles[2][0].value, gameTiles[2][1].value, gameTiles[2][2].value, gameTiles[2][3].value,
+                gameTiles[3][0].value, gameTiles[3][1].value, gameTiles[3][2].value, gameTiles[3][3].value);
+        return res;
     }
 }
