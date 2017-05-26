@@ -25,7 +25,6 @@ public class Solution {
                 files.offer(subFile);
             }
         }
-
         List<String> res = new ArrayList<String>();
         for (File f : files) {
             res.add(f.getAbsolutePath());
