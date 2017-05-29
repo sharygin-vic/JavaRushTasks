@@ -70,6 +70,3 @@ public class Solution {
         }
     }
 }
-
-//c:/r/ccc.txt
-//c:/r/t/test.zip
