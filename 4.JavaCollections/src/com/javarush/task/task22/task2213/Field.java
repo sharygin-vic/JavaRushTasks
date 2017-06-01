@@ -1,7 +1,6 @@
 package com.javarush.task.task22.task2213;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Класс Field описывает "поле клеток" игры Тетрис
@@ -14,7 +13,7 @@ public class Field {
     //матрица поля: 1 - клетка занята, 0 - свободна
     private int[][] matrix;
 
-    public Field(int height, int width) {
+    public Field(int width, int height) {
         this.width = width;
         this.height = height;
         matrix = new int[height][width];
@@ -106,29 +105,28 @@ public class Field {
      * Удаляем заполненные линии
      */
     public void removeFullLines() {
-        //Например так:
         //Создаем список для хранения линий
-        List<int[]> rows = new ArrayList<int[]>(height);
+        ArrayList<int[]> lines = new ArrayList<int[]>();
 
-        //Копируем все непустые ( и не поностью заполненные) линии в список.
-        for (int iY = 0; iY < height; iY++) {
-            int emptyCellCont = 0;
-            for (int iX = 0; iX < width; iX++) {
-                if (matrix[iY][iX] == 0) {
-                    emptyCellCont++;
-                }
+        //Копируем все непустые линии в список.
+        for (int i = 0; i < height; i++) {
+            //подсчитываем количество единиц в строке - просто суммируем все ее значения
+            int count = 0;
+            for (int j = 0; j < width; j++) {
+                count += matrix[i][j];
             }
-            if (emptyCellCont > 0 && emptyCellCont < width) {
-                rows.add(matrix[iY]);
-            }
+
+            //Если сумма строки не равна ее ширине - добавляем в список
+            if (count != width)
+                lines.add(matrix[i]);
         }
+
         //Добавляем недостающие строки в начало списка.
-        while (rows.size() <= height) {
-            rows.add(new int[width]);
+        while (lines.size() < height) {
+            lines.add(0, new int[width]);
         }
+
         //Преобразуем список обратно в матрицу
-        for (int iY = 0; iY < height; iY++) {
-            matrix[iY] = rows.get(iY);
-        }
+        matrix = lines.toArray(new int[height][width]);
     }
 }
