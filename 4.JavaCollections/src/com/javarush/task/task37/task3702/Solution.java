@@ -1,16 +1,18 @@
 package com.javarush.task.task37.task3702;
 
-import com.javarush.task.task37.task3702.male.MaleFactory;
-
-/**
- * Created by dell on 12-Jun-17.
- */
 public class Solution {
     public static void main(String[] args) {
-        MaleFactory maleFactory = new MaleFactory();
+        AbstractFactory factory = FactoryProducer.getFactory(FactoryProducer.HumanFactoryType.FEMALE);
+        useFactory(factory);
 
-        System.out.println(maleFactory.getPerson(99));
-        System.out.println(maleFactory.getPerson(4));
-        System.out.println(maleFactory.getPerson(15));
+        factory = FactoryProducer.getFactory(FactoryProducer.HumanFactoryType.MALE);
+        useFactory(factory);
     }
+
+    public static void useFactory(AbstractFactory factory) {
+        System.out.println(factory.getPerson(99));
+        System.out.println(factory.getPerson(4));
+        System.out.println(factory.getPerson(15));
+    }
+
 }
