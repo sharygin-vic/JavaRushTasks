@@ -1,0 +1,80 @@
+package com.javarush.task.task36.task3611;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
+
+/* 
+Сколько у человека потенциальных друзей?
+*/
+
+public class Solution {
+    private boolean[][] humansRelationships;
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        solution.humansRelationships = generateRelationships();
+
+        Set<Integer> allFriendsAndPotentialFriends = solution.getAllFriendsAndPotentialFriends(4, 2);
+        System.out.println(allFriendsAndPotentialFriends);                              //expected: [0, 1, 2, 3, 5, 7]
+        Set<Integer> potentialFriends = solution.removeFriendsFromSet(allFriendsAndPotentialFriends, 4);
+        System.out.println(potentialFriends);                                           //expected: [2, 5, 7]
+    }
+
+    public Set<Integer> getAllFriendsAndPotentialFriends(int index, int deep) {
+        //напишите тут ваш код
+        Set<Integer> res = new TreeSet<Integer>();
+        // добавляем непосредственных друзей:
+        for (int i = 0; i < humansRelationships.length; i++) {
+            if (isFriend(index, i)) {
+                res.add(i);
+            }
+        }
+        // добавляем друзей для друзей:
+        Set<Integer> inDeepSet = res;
+        for (int curDeep = 1; curDeep < deep; curDeep++) {
+            Set<Integer> outDeepSet = new HashSet<Integer>();
+            for (Integer num : inDeepSet.toArray(new Integer[0])) {
+                for (int i = 0; i < humansRelationships.length; i++) {
+                    if ( i != index && !res.contains(i) && isFriend(num, i)) {
+                        outDeepSet.add(i);
+                    }
+                }
+            }
+            res.addAll(outDeepSet);
+            inDeepSet = outDeepSet;
+        }
+        return res;
+    }
+
+    private boolean isFriend(int index, int i) {
+        return ((i < index) && (index < humansRelationships.length) && humansRelationships[index][i]) ||
+                ((i > index) && humansRelationships[i][index]);
+    }
+
+    //remove people from set, with which you have already had relationship
+    public Set<Integer> removeFriendsFromSet(Set<Integer> set, int index) {
+        for (int i = 0; i < humansRelationships.length; i++) {
+            if ((i < index) && (index < humansRelationships.length) && humansRelationships[index][i]) {
+                set.remove(i);
+            } else if ((i > index) && humansRelationships[i][index]) {
+                set.remove(i);
+            }
+        }
+        return set;
+    }
+
+    //return test data
+    private static boolean[][] generateRelationships() {
+        return new boolean[][]{
+                {true},                                                                 //0
+                {true, true},                                                           //1
+                {false, true, true},                                                    //2
+                {false, false, false, true},                                            //3
+                {true, true, false, true, true},                                        //4
+                {true, false, true, false, false, true},                                //5
+                {false, false, false, false, false, true, true},                        //6
+                {false, false, false, true, false, false, false, true}                  //7
+        };
+    }
+}
