@@ -13,7 +13,6 @@ public class Shortener {
         this.storageStrategy = storageStrategy;
     }
 
-
     public synchronized Long getId(String string) {
         if (storageStrategy.containsValue(string)) {
             return storageStrategy.getKey(string);
