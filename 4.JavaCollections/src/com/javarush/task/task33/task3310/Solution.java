@@ -14,11 +14,13 @@ public class Solution {
         testStrategy(new HashMapStorageStrategy(), 10000);
         testStrategy(new OurHashMapStorageStrategy(), 10000);
 
-        FileBucket fb = new FileBucket();
-        Entry eWrite1 = new Entry(11, 1111L, "1111value",
-                new Entry(22, 2222L, "2222value", null));
-        fb.putEntry(eWrite1);
-        Entry eRead1 = fb.getEntry();  // ok
+//        FileBucket fb = new FileBucket();
+//        Entry eWrite1 = new Entry(11, 1111L, "1111value",
+//                new Entry(22, 2222L, "2222value", null));
+//        fb.putEntry(eWrite1);
+//        Entry eRead1 = fb.getEntry();  // ok
+
+        testStrategy(new FileStorageStrategy(), 100);
     }
 
     public static Set<Long> getIds(Shortener shortener, Set<String> strings) {
@@ -41,7 +43,6 @@ public class Solution {
         Helper.printMessage(strategy.getClass().getSimpleName());
         Set<String> strings = new HashSet<String>();
         for (int i = 0; i < elementsNumber; i++) {
-            //strategy.put(new Long(i), Helper.generateRandomString());
             strings.add(Helper.generateRandomString());
         }
         Shortener shortener = new Shortener(strategy);

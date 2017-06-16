@@ -79,6 +79,7 @@ public class OurHashMapStorageStrategy implements StorageStrategy {
         while (true) {
             if (entry == null) return null;
             if (entry.getKey().equals(key)) return entry;
+            entry = entry.next;
         }
     }
 
