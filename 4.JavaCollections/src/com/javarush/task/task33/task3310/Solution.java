@@ -21,6 +21,8 @@ public class Solution {
 //        Entry eRead1 = fb.getEntry();  // ok
 
         testStrategy(new FileStorageStrategy(), 100);
+
+        testStrategy(new OurHashBiMapStorageStrategy(), 10000);
     }
 
     public static Set<Long> getIds(Shortener shortener, Set<String> strings) {
