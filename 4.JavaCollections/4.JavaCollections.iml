@@ -12,5 +12,6 @@
     <orderEntry type="library" name="jackson-databind-2.9.0.pr3" level="project" />
     <orderEntry type="library" name="org.slf4j:slf4j-api:1.7.25" level="application" />
     <orderEntry type="library" name="org.slf4j:slf4j-log4j12:1.7.25" level="application" />
+    <orderEntry type="library" name="com.google.guava:guava:21.0" level="application" />
   </component>
 </module>
