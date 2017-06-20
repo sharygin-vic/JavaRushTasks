@@ -1,9 +1,6 @@
 package com.javarush.task.task39.task3913;
 
-import com.javarush.task.task39.task3913.query.DateQuery;
-import com.javarush.task.task39.task3913.query.EventQuery;
-import com.javarush.task.task39.task3913.query.IPQuery;
-import com.javarush.task.task39.task3913.query.UserQuery;
+import com.javarush.task.task39.task3913.query.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Created by dell on 19-Jun-17.
  */
-public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQuery {
     private Path logDir;
 
     public LogParser(Path logDir) {
@@ -473,6 +470,84 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
                 else {
                     res.put(taskNum, 1);
                 }
+            }
+        }
+        return res;
+    }
+
+    //*****************************  QLQuery  interface  ******************************
+
+    @Override
+    public Set<Object> execute(String query) {
+        String s = query.replaceAll("( |\t)+", " ").trim();
+        if (s.startsWith("get ip")) {
+            return getIp(s.substring(6).trim());
+        }
+        else if (s.startsWith("get user")) {
+            return getUser(s.substring(8).trim());
+        }
+        else if (s.startsWith("get date")) {
+            return getDate(s.substring(8).trim());
+        }
+        else if (s.startsWith("get event")) {
+            return getEvent(s.substring(9).trim());
+        }
+        else if (s.startsWith("get status")) {
+            return getStatus(s.substring(10).trim());
+        }
+        return null;
+    }
+
+    private Set<Object> getIp(String condition) {
+        Set<Object> res = new HashSet<Object>();
+        List<LogData> datas = parsePath();
+        if (condition.length() == 0) {
+            for (LogData data : datas) {
+                res.add(data.ip);
+            }
+        }
+        return res;
+    }
+
+    private Set<Object> getUser(String condition) {
+        Set<Object> res = new HashSet<Object>();
+        List<LogData> datas = parsePath();
+        if (condition.length() == 0) {
+            for (LogData data : datas) {
+                res.add(data.userName);
+            }
+        }
+        return res;
+    }
+
+    private Set<Object> getDate(String condition) {
+        Set<Object> res = new HashSet<Object>();
+        List<LogData> datas = parsePath();
+        if (condition.length() == 0) {
+            for (LogData data : datas) {
+                res.add(data.date);
+            }
+        }
+        return res;
+    }
+
+    private Set<Object> getEvent(String condition) {
+        Set<Object> res = new HashSet<Object>();
+        List<LogData> datas = parsePath();
+        if (condition.length() == 0) {
+            for (LogData data : datas) {
+                res.add(data.event);
+            }
+        }
+        return res;
+    }
+
+    private Set<Object> getStatus(String condition) {
+        Set<Object> res = new HashSet<Object>();
+        List<LogData> datas = parsePath();
+        if (condition.length() == 0) {
+            for (LogData data : datas) {
+                res.add(data.status);
             }
         }
         return res;
