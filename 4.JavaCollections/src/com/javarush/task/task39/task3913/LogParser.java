@@ -1,6 +1,8 @@
 package com.javarush.task.task39.task3913;
 
 import com.javarush.task.task39.task3913.query.IPQuery;
+import com.javarush.task.task39.task3913.query.UserQuery;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Created by dell on 19-Jun-17.
  */
-public class LogParser implements IPQuery {
+public class LogParser implements IPQuery, UserQuery {
     private Path logDir;
 
     public LogParser(Path logDir) {
@@ -34,6 +36,8 @@ public class LogParser implements IPQuery {
         long beforeMs = end.getTime();
         return dateMs >= afterMs && dateMs <= beforeMs;
     }
+
+    //****************************  IPQuery  interface  ********************************
 
     @Override
     public int getNumberOfUniqueIPs(Date after, Date before) {
@@ -89,6 +93,141 @@ public class LogParser implements IPQuery {
         return res;
     }
 
+    //*****************************  UserQuery  interface  ******************************
+
+    @Override
+    public Set<String> getAllUsers() {
+        HashSet<String> res = new HashSet<String>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            res.add(data.userName);
+        }
+        return res;
+    }
+
+    @Override
+    public int getNumberOfUsers(Date after, Date before) {
+        HashSet<String> res = new HashSet<String>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (isDateBetween(data.date, after, before)) {
+                res.add(data.userName);
+            }
+        }
+        return res.size();
+    }
+
+    @Override
+    public int getNumberOfUserEvents(String user, Date after, Date before) {
+        HashSet<Event> res = new HashSet<Event>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.userName.equals(user) && isDateBetween(data.date, after, before)) {
+                res.add(data.event);
+            }
+        }
+        return res.size();
+    }
+
+    @Override
+    public Set<String> getUsersForIP(String ip, Date after, Date before) {
+        HashSet<String> res = new HashSet<String>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.ip.equals(ip) && isDateBetween(data.date, after, before)) {
+                res.add(data.userName);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Set<String> getLoggedUsers(Date after, Date before) {
+        HashSet<String> res = new HashSet<String>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.event == Event.LOGIN && isDateBetween(data.date, after, before)) {
+                res.add(data.userName);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Set<String> getDownloadedPluginUsers(Date after, Date before) {
+        HashSet<String> res = new HashSet<String>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.event == Event.DOWNLOAD_PLUGIN && isDateBetween(data.date, after, before)) {
+                res.add(data.userName);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Set<String> getWroteMessageUsers(Date after, Date before) {
+        HashSet<String> res = new HashSet<String>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.event == Event.WRITE_MESSAGE && isDateBetween(data.date, after, before)) {
+                res.add(data.userName);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Set<String> getSolvedTaskUsers(Date after, Date before) {
+        HashSet<String> res = new HashSet<String>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.event == Event.SOLVE_TASK && isDateBetween(data.date, after, before)) {
+                res.add(data.userName);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Set<String> getSolvedTaskUsers(Date after, Date before, int task) {
+        HashSet<String> res = new HashSet<String>();
+        List<LogData> datas = parsePath();
+        String taskStr = "" + task;
+        for (LogData data : datas) {
+            if (data.event == Event.SOLVE_TASK && data.eventParam.equals(taskStr) && isDateBetween(data.date, after, before)) {
+                res.add(data.userName);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Set<String> getDoneTaskUsers(Date after, Date before) {
+        HashSet<String> res = new HashSet<String>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.event == Event.DONE_TASK && isDateBetween(data.date, after, before)) {
+                res.add(data.userName);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Set<String> getDoneTaskUsers(Date after, Date before, int task) {
+        HashSet<String> res = new HashSet<String>();
+        List<LogData> datas = parsePath();
+        String taskStr = "" + task;
+        for (LogData data : datas) {
+            if (data.event == Event.DONE_TASK && data.eventParam.equals(taskStr) && isDateBetween(data.date, after, before)) {
+                res.add(data.userName);
+            }
+        }
+        return res;
+    }
+
+    //******************************************************************************
 
     private class LogData {
         private String ip;
