@@ -31,7 +31,15 @@ public class Solution {
         System.out.println(logParser.getSolvedTaskUsers(null, new Date(), 1));
         System.out.println(logParser.getDoneTaskUsers(null, new Date()));
         System.out.println(logParser.getDoneTaskUsers(null, new Date(), 15));
-        System.out.println("======================");
+        System.out.println("==========  DateQuery  ============");
+        System.out.println(logParser.getDatesForUserAndEvent("Eduard Petrovich Morozko", Event.WRITE_MESSAGE, null, new Date()));
+        System.out.println(logParser.getDatesWhenSomethingFailed(null, new Date()));
+        System.out.println(logParser.getDatesWhenErrorHappened(null, new Date()));
+        System.out.println(logParser.getDateWhenUserLoggedFirstTime("Eduard Petrovich Morozko", null, new Date()));
+        System.out.println(logParser.getDateWhenUserSolvedTask("Vasya Pupkin", 18, null, new Date()));
+        System.out.println(logParser.getDateWhenUserDoneTask("Vasya Pupkin", 15, null, new Date()));
+        System.out.println(logParser.getDatesWhenUserWroteMessage("Eduard Petrovich Morozko", null, new Date()));
+        System.out.println(logParser.getDatesWhenUserDownloadedPlugin("Eduard Petrovich Morozko", null, new Date()));
 
     }
 }

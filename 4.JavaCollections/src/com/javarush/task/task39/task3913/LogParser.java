@@ -1,5 +1,6 @@
 package com.javarush.task.task39.task3913;
 
+import com.javarush.task.task39.task3913.query.DateQuery;
 import com.javarush.task.task39.task3913.query.IPQuery;
 import com.javarush.task.task39.task3913.query.UserQuery;
 
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Created by dell on 19-Jun-17.
  */
-public class LogParser implements IPQuery, UserQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery {
     private Path logDir;
 
     public LogParser(Path logDir) {
@@ -222,6 +223,123 @@ public class LogParser implements IPQuery, UserQuery {
         for (LogData data : datas) {
             if (data.event == Event.DONE_TASK && data.eventParam.equals(taskStr) && isDateBetween(data.date, after, before)) {
                 res.add(data.userName);
+            }
+        }
+        return res;
+    }
+
+    //*****************************  DateQuery  interface  ******************************
+
+    @Override
+    public Set<Date> getDatesForUserAndEvent(String user, Event event, Date after, Date before) {
+        HashSet<Date> res = new HashSet<Date>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.userName.equals(user) && data.event == event && isDateBetween(data.date, after, before)) {
+                res.add(data.date);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Set<Date> getDatesWhenSomethingFailed(Date after, Date before) {
+        HashSet<Date> res = new HashSet<Date>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.status == Status.FAILED && isDateBetween(data.date, after, before)) {
+                res.add(data.date);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Set<Date> getDatesWhenErrorHappened(Date after, Date before) {
+        HashSet<Date> res = new HashSet<Date>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.status == Status.ERROR && isDateBetween(data.date, after, before)) {
+                res.add(data.date);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Date getDateWhenUserLoggedFirstTime(String user, Date after, Date before) {
+        List<LogData> datas = parsePath();
+        Date firstLoginDate = new Date(Long.MAX_VALUE);
+        boolean firstLoginDateExists = false;
+        for (LogData data : datas) {
+            if (data.userName.equals(user) && data.event == Event.LOGIN && isDateBetween(data.date, after, before)) {
+                if (data.date.before(firstLoginDate)) {
+                    firstLoginDate = data.date;
+                    firstLoginDateExists = true;
+                }
+            }
+        }
+        if (firstLoginDateExists) return firstLoginDate;
+        else return null;
+    }
+
+    @Override
+    public Date getDateWhenUserSolvedTask(String user, int task, Date after, Date before) {
+        List<LogData> datas = parsePath();
+        String taskStr = "" + task;
+        Date firstSolvedDate = new Date(Long.MAX_VALUE);
+        boolean firstSolvedDateExists = false;
+        for (LogData data : datas) {
+            if (data.userName.equals(user) && data.event == Event.SOLVE_TASK && data.eventParam.equals(taskStr)
+                    && isDateBetween(data.date, after, before)) {
+                if (data.date.before(firstSolvedDate)) {
+                    firstSolvedDate = data.date;
+                    firstSolvedDateExists = true;
+                }
+            }
+        }
+        if (firstSolvedDateExists) return firstSolvedDate;
+        else return null;
+    }
+
+    @Override
+    public Date getDateWhenUserDoneTask(String user, int task, Date after, Date before) {
+        List<LogData> datas = parsePath();
+        String taskStr = "" + task;
+        Date firstDoneDate = new Date(Long.MAX_VALUE);
+        boolean firstDoneDateExists = false;
+        for (LogData data : datas) {
+            if (data.userName.equals(user) && data.event == Event.DONE_TASK && data.eventParam.equals(taskStr)
+                    && isDateBetween(data.date, after, before)) {
+                if (data.date.before(firstDoneDate)) {
+                    firstDoneDate = data.date;
+                    firstDoneDateExists = true;
+                }
+            }
+        }
+        if (firstDoneDateExists) return firstDoneDate;
+        else return null;
+    }
+
+    @Override
+    public Set<Date> getDatesWhenUserWroteMessage(String user, Date after, Date before) {
+        HashSet<Date> res = new HashSet<Date>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.userName.equals(user) && data.event == Event.WRITE_MESSAGE && isDateBetween(data.date, after, before)) {
+                res.add(data.date);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public Set<Date> getDatesWhenUserDownloadedPlugin(String user, Date after, Date before) {
+        HashSet<Date> res = new HashSet<Date>();
+        List<LogData> datas = parsePath();
+        for (LogData data : datas) {
+            if (data.userName.equals(user) && data.event == Event.DOWNLOAD_PLUGIN && isDateBetween(data.date, after, before)) {
+                res.add(data.date);
             }
         }
         return res;
