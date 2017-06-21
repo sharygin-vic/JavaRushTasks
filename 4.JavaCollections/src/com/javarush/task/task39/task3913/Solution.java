@@ -41,5 +41,38 @@ public class Solution {
         System.out.println(logParser.getDatesWhenUserWroteMessage("Eduard Petrovich Morozko", null, new Date()));
         System.out.println(logParser.getDatesWhenUserDownloadedPlugin("Eduard Petrovich Morozko", null, new Date()));
 
+        System.out.println("==========  QLQuery  ============");
+        System.out.println(logParser.execute("get ip"));
+        System.out.println(logParser.execute("get user"));
+        System.out.println(logParser.execute("get date"));
+        System.out.println(logParser.execute("get event"));
+        System.out.println(logParser.execute("get status"));
+
+        System.out.println("---- get ip");
+        System.out.println("for user   : " + logParser.execute("get ip    for   user     = \"  Eduard   Petrovich Morozko   \""));
+        System.out.println("for date   : " + logParser.execute("get ip for date = \" 30.1.2014   12:56:22 \""));
+        System.out.println("for date   : " + logParser.execute("get ip for date = \"30.01.2014 12:56:22\""));
+        System.out.println("for event  : " + logParser.execute("get ip for event = \"WRITE_MESSAGE\""));
+        System.out.println("for status : " + logParser.execute("get ip for status = \"OK\""));
+        System.out.println("---- get user");
+        System.out.println("for ip     : " + logParser.execute("get user for ip = \"192.168.100.2\""));
+        System.out.println("for date   : " + logParser.execute("get user for date = \"30.01.2014 12:56:22\""));
+        System.out.println("for event  : " + logParser.execute("get user for event = \"WRITE_MESSAGE\""));
+        System.out.println("for status : " + logParser.execute("get user for status = \"OK\""));
+        System.out.println("---- get date");
+        System.out.println("for ip     : " + logParser.execute("get date for ip = \"146.34.15.5\""));
+        System.out.println("for user   : " + logParser.execute("get date for user = \"Eduard Petrovich Morozko\""));
+        System.out.println("for event  : " + logParser.execute("get date for event = \"WRITE_MESSAGE\""));
+        System.out.println("for status : " + logParser.execute("get date for status = \"OK\""));
+        System.out.println("---- get event");
+        System.out.println("for ip     : " + logParser.execute("get event for ip = \"146.34.15.5\""));
+        System.out.println("for user   : " + logParser.execute("get event for user = \"Eduard Petrovich Morozko\""));
+        System.out.println("for date   : " + logParser.execute("get event for date = \"30.01.2014 12:56:22\""));
+        System.out.println("for status : " + logParser.execute("get event for status = \"OK\""));
+        System.out.println("---- get status");
+        System.out.println("for ip     : " + logParser.execute("get status for ip = \"146.34.15.5\""));
+        System.out.println("for user   : " + logParser.execute("get status for user = \"Eduard Petrovich Morozko\""));
+        System.out.println("for date   : " + logParser.execute("get status for date = \"30.01.2014 12:56:22\""));
+        System.out.println("for event  : " + logParser.execute("get status for event = \"WRITE_MESSAGE\""));
     }
 }

@@ -20,7 +20,6 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         this.logDir = logDir;
     }
 
-
     private boolean isDateBetween(Date date, Date after, Date before) {
         Date start = after;
         if (start == null) {
@@ -480,74 +479,134 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     @Override
     public Set<Object> execute(String query) {
         String s = query.replaceAll("( |\t)+", " ").trim();
+        String field = "";
         if (s.startsWith("get ip")) {
-            return getIp(s.substring(6).trim());
+            field = "ip";
+            s = s.substring(6).trim();
         }
         else if (s.startsWith("get user")) {
-            return getUser(s.substring(8).trim());
+            field = "user";
+            s = s.substring(8).trim();
         }
         else if (s.startsWith("get date")) {
-            return getDate(s.substring(8).trim());
+            field = "date";
+            s = s.substring(8).trim();
         }
         else if (s.startsWith("get event")) {
-            return getEvent(s.substring(9).trim());
+            field = "event";
+            s = s.substring(9).trim();
         }
         else if (s.startsWith("get status")) {
-            return getStatus(s.substring(10).trim());
+            field = "status";
+            s = s.substring(10).trim();
         }
-        return null;
+        else
+            return null;
+
+        if (s.startsWith("for ")) {
+            s = s.substring(4);
+        }
+        else {
+            s = "";
+        }
+        return getFilteredData(field, s);
     }
 
-    private Set<Object> getIp(String condition) {
+    private Set<Object> getFilteredData(String field, String filter) {
         Set<Object> res = new HashSet<Object>();
         List<LogData> datas = parsePath();
-        if (condition.length() == 0) {
-            for (LogData data : datas) {
-                res.add(data.ip);
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+        boolean filterIpExists = false;
+        String  filterIpValue = null;
+        boolean filterUserExists = false;
+        String  filterUserValue = null;
+        boolean filterDateExists = false;
+//        Date    filterDateValue = null;       // это правильно для сравнения дат события лога и фильтра запроса в типе Date (задача 6 - get ip for date = "30.01.2014 12:56:22"):
+        String  filterDateValueStr = null;      // это правильно для сравнения дат события лога и фильтра запроса в типе String (задача 6 - get ip for date = "30.01.2014 12:56:22"). Валидатор проверяет через совпадение строк
+        boolean filterEventExists = false;
+        Event   filterEventValue = null;
+        boolean filterStatusExists = false;
+        Status  filterStatusValue = null;
+
+//        boolean filterDateIntervalExists = false;
+//        Date filterDateAfterValue;
+//        Date filterDateBeforeValue;
+
+        if (filter != null && filter.length() > 0) {
+            String[] words = filter.split(" ");
+            int nextWord = 0;
+            String filterFieldName = words[nextWord];
+            nextWord++;
+            nextWord++;  // skip "="
+            String filterFieldStrValue;
+            StringBuilder sb = new StringBuilder();
+            while (nextWord < words.length && ( (sb.length() > 1) ? (sb.charAt(sb.length()-1) != '"') : true) ) {
+                if (sb.length() > 0) sb.append(" ");
+                sb.append(words[nextWord]);
+                nextWord++;
             }
-        }
-        return res;
-    }
-
-    private Set<Object> getUser(String condition) {
-        Set<Object> res = new HashSet<Object>();
-        List<LogData> datas = parsePath();
-        if (condition.length() == 0) {
-            for (LogData data : datas) {
-                res.add(data.userName);
+            int charFirstIndex = 0;
+            if (sb.charAt(0) == '"') {
+                charFirstIndex++;
             }
-        }
-        return res;
-    }
-
-    private Set<Object> getDate(String condition) {
-        Set<Object> res = new HashSet<Object>();
-        List<LogData> datas = parsePath();
-        if (condition.length() == 0) {
-            for (LogData data : datas) {
-                res.add(data.date);
+            int charLastIndex  = sb.length() - 1;
+            if (sb.charAt(charLastIndex) == '"') {
+                charLastIndex--;
             }
-        }
-        return res;
-    }
+            filterFieldStrValue = sb.substring(charFirstIndex, charLastIndex+1).trim();
 
-    private Set<Object> getEvent(String condition) {
-        Set<Object> res = new HashSet<Object>();
-        List<LogData> datas = parsePath();
-        if (condition.length() == 0) {
-            for (LogData data : datas) {
-                res.add(data.event);
+            if ("ip".equals(filterFieldName)) {
+                filterIpExists = true;
+                filterIpValue = filterFieldStrValue;
+            } else if ("user".equals(filterFieldName)) {
+                filterUserExists = true;
+                filterUserValue = filterFieldStrValue;
+            } else if ("date".equals(filterFieldName)) {
+                // это правильно для сравнения дат события лога и фильтра запроса в типе Date (задача 6 - get ip for date = "30.01.2014 12:56:22"):
+//                try {
+//                    filterDateValue = df.parse(filterFieldStrValue);
+//                    filterDateExists = true;
+//                } catch (ParseException e) {
+//                    //e.printStackTrace();
+//                }
+                // это правильно для сравнения дат события лога и фильтра запроса в типе String (задача 6 - get ip for date = "30.01.2014 12:56:22").
+                // Валидатор проверяет через совпадение строк:
+                filterDateValueStr = filterFieldStrValue;
+                filterDateExists = true;
+            } else if ("event".equals(filterFieldName)) {
+                filterEventExists = true;
+                filterEventValue = Event.valueOf(filterFieldStrValue);
+            } else if ("status".equals(filterFieldName)) {
+                filterStatusExists = true;
+                filterStatusValue = Status.valueOf(filterFieldStrValue);
             }
-        }
-        return res;
-    }
 
-    private Set<Object> getStatus(String condition) {
-        Set<Object> res = new HashSet<Object>();
-        List<LogData> datas = parsePath();
-        if (condition.length() == 0) {
-            for (LogData data : datas) {
-                res.add(data.status);
+//          if ("after".equals(filterAfterName)) {
+//
+//          }
+//          else if ("before".equals(filterBeforeName)) {
+//
+//          }
+        }
+
+        for (LogData data : datas) {
+            if (  (!filterIpExists || filterIpValue.equals(data.ip))
+                &&(!filterUserExists || filterUserValue.equals(data.userName))
+
+                    //&&(!filterDateExists || filterDateValue.equals(data.date))            // это правильно для сравнения дат события лога и фильтра запроса в типе Date (задача 6 - get ip for date = "30.01.2014 12:56:22")
+                    &&(!filterDateExists || data.dateStr.contains(filterDateValueStr)  )    // это правильно для сравнения дат события лога и фильтра запроса в типе String (задача 6 - get ip for date = "30.01.2014 12:56:22")
+                                                                                            // Валидатор проверяет через совпадение строк
+
+                &&(!filterEventExists || (filterEventValue == data.event))
+                &&(!filterStatusExists || (filterStatusValue == data.status))
+                /* &&(filterDateIntervalExists ? isDateBetween(data.date, filterDateAfterValue, filterDateBeforeValue) */
+            ) {
+                if ("ip".equals(field)) res.add(data.ip);
+                else if ("user".equals(field)) res.add(data.userName);
+                else if ("date".equals(field)) res.add(data.date);
+                else if ("event".equals(field)) res.add(data.event);
+                else if ("status".equals(field)) res.add(data.status);
             }
         }
         return res;
@@ -560,6 +619,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         private String userName;
         private Event event;
         private Date date;
+        private String dateStr;  // исходная дата в виде строки из лога - для сравнения дат события лога и фильтра запроса в типе String (задача 6 - get ip for date = "30.01.2014 12:56:22")
         private String eventParam;
         private Status status;
     }
@@ -580,6 +640,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         res.event = Event.valueOf(words[wordArrayIndex]);
         wordArrayIndex--;
         String dateStr = words[wordArrayIndex-1] + " " + words[wordArrayIndex];
+        res.dateStr = dateStr;  // костыль для "Парсер логов (6)" валидатора "get ip for date = "30.01.2014 12:56:22""
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         try {
             res.date = df.parse(dateStr);
@@ -618,5 +679,4 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         }
         return res;
     }
-
 }
