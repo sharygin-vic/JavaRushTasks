@@ -74,5 +74,33 @@ public class Solution {
         System.out.println("for user   : " + logParser.execute("get status for user = \"Eduard Petrovich Morozko\""));
         System.out.println("for date   : " + logParser.execute("get status for date = \"30.01.2014 12:56:22\""));
         System.out.println("for event  : " + logParser.execute("get status for event = \"WRITE_MESSAGE\""));
+
+        System.out.println("==========  QLQuery with date interval ============");
+        System.out.println("---- get ip");
+        System.out.println("for user   : " + logParser.execute("get ip    for   user     = \"  Eduard   Petrovich Morozko   \" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for date   : " + logParser.execute("get ip for date = \" 30.1.2014   12:56:22 \" and date between \"11.12.2010   0:0:0\"   and \"03.1.2017   23:59:59\""));
+        System.out.println("for date   : " + logParser.execute("get ip for date = \"30.01.2014 12:56:22\" and date between \"11.12.2010 00:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for event  : " + logParser.execute("get ip for event = \"WRITE_MESSAGE\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for status : " + logParser.execute("get ip for status = \"OK\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("---- get user");
+        System.out.println("for ip     : " + logParser.execute("get user for ip = \"192.168.100.2\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for date   : " + logParser.execute("get user for date = \"30.01.2014 12:56:22\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for event  : " + logParser.execute("get user for event = \"WRITE_MESSAGE\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for status : " + logParser.execute("get user for status = \"OK\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("---- get date");
+        System.out.println("for ip     : " + logParser.execute("get date for ip = \"146.34.15.5\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for user   : " + logParser.execute("get date for user = \"Eduard Petrovich Morozko\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for event  : " + logParser.execute("get date for event = \"WRITE_MESSAGE\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for status : " + logParser.execute("get date for status = \"OK\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("---- get event");
+        System.out.println("for ip     : " + logParser.execute("get event for ip = \"146.34.15.5\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for user   : " + logParser.execute("get event for user = \"Eduard Petrovich Morozko\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for date   : " + logParser.execute("get event for date = \"30.01.2014 12:56:22\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for status : " + logParser.execute("get event for status = \"OK\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("---- get status");
+        System.out.println("for ip     : " + logParser.execute("get status for ip = \"146.34.15.5\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for user   : " + logParser.execute("get status for user = \"Eduard Petrovich Morozko\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for date   : " + logParser.execute("get status for date = \"30.01.2014 12:56:22\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for event  : " + logParser.execute("get status for event = \"WRITE_MESSAGE\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
     }
 }
