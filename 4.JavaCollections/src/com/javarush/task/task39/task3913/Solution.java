@@ -77,7 +77,7 @@ public class Solution {
 
         System.out.println("==========  QLQuery with date interval ============");
         System.out.println("---- get ip");
-        System.out.println("for user   : " + logParser.execute("get ip    for   user     = \"  Eduard   Petrovich Morozko   \" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
+        System.out.println("for user   : " + logParser.execute("get ip    for   user     = \"  Eduard   Petrovich    Morozko   \" and   date between \"11.12.2010   0:00:00\" and \"03.01.2017 23:59:59\""));
         System.out.println("for date   : " + logParser.execute("get ip for date = \" 30.1.2014   12:56:22 \" and date between \"11.12.2010   0:0:0\"   and \"03.1.2017   23:59:59\""));
         System.out.println("for date   : " + logParser.execute("get ip for date = \"30.01.2014 12:56:22\" and date between \"11.12.2010 00:00:00\" and \"03.01.2017 23:59:59\""));
         System.out.println("for event  : " + logParser.execute("get ip for event = \"WRITE_MESSAGE\" and date between \"11.12.2010 0:00:00\" and \"03.01.2017 23:59:59\""));
