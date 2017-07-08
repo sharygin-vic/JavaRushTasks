@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="org.powermock:powermock-core:1.4.11" type="repository">
+    <properties maven-id="org.powermock:powermock-core:1.4.11" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/powermock-core-1.4.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/powermock-reflect-1.4.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/objenesis-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javassist-3.15.0-GA.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
