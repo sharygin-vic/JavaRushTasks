@@ -11,5 +11,6 @@ public class Aggregator {
         Controller controller = new Controller(provider);
 
         System.out.println(controller);
+
     }
 }
