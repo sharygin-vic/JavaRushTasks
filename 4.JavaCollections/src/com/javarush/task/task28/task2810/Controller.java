@@ -31,7 +31,7 @@ public class Controller {
         List<Vacancy>  vacancies = new ArrayList<Vacancy>();
         try {
             for (Provider provider : providers) {
-                vacancies.addAll(provider.getJavaVacancies("java"));
+                vacancies.addAll(provider.getJavaVacancies("Киев"));
             }
             System.out.println(vacancies.size());
         }

@@ -17,7 +17,9 @@ import java.util.List;
 // https://hh.ua/search/vacancy?text=java+ADDITIONAL_VALUE&page=PAGE_VALUE
 public class HHStrategy implements Strategy {
     private static final String URL_FORMAT = "http://hh.ua/search/vacancy?text=java+%s&page=%d";
-    private static final String userAgent = "Mozilla/5.0 (jsoup)";
+    //private static final String userAgent = "Mozilla/5.0 (jsoup)";
+    private static final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36";
+    private static final String referrer = "referrer";
     private static final int timeout = 5 * 1000;
 
     @Override
@@ -26,8 +28,11 @@ public class HHStrategy implements Strategy {
         Document doc;
         try {
             doc = Jsoup.connect(String.format(URL_FORMAT, searchString, 0))
+                    .userAgent(userAgent)
+                    .referrer(referrer)
+                    //.timeout(timeout)
                     .get();
-            //System.out.println(doc.html());
+            System.out.println(doc.html());
         } catch (IOException e) {
             e.printStackTrace();
         }
