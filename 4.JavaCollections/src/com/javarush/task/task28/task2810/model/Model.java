@@ -2,7 +2,6 @@ package com.javarush.task.task28.task2810.model;
 
 import com.javarush.task.task28.task2810.view.View;
 import com.javarush.task.task28.task2810.vo.Vacancy;
-
 import java.util.ArrayList;
 import java.util.List;
 

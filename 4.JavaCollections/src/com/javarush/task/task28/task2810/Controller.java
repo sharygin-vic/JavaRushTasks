@@ -1,12 +1,7 @@
 package com.javarush.task.task28.task2810;
 
 import com.javarush.task.task28.task2810.model.Model;
-import com.javarush.task.task28.task2810.model.Provider;
-import com.javarush.task.task28.task2810.vo.Vacancy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by dell on 09-Jul-17.
