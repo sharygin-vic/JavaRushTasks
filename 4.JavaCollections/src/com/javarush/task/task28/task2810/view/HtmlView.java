@@ -8,11 +8,17 @@ import java.util.List;
  * Created by dell on 11-Jul-17.
  */
 public class HtmlView implements View {
+    private final String filePath = "./src/" + this.getClass().getPackage().getName().replace('.', '/') + "/vacancies.html";
     private Controller controller;
 
     @Override
     public void update(List<Vacancy> vacancies) {
-        System.out.println(vacancies.size());
+        try {
+            updateFile(getUpdatedFileContent(vacancies));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -22,5 +28,13 @@ public class HtmlView implements View {
 
     public void userCitySelectEmulationMethod() {
         controller.onCitySelect("Odessa");
+    }
+
+    private String getUpdatedFileContent(List<Vacancy> vacancies) {
+        return null;
+    }
+
+    private void updateFile(String fileContent) {
+
     }
 }
