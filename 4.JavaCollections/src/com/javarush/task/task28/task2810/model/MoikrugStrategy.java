@@ -29,7 +29,7 @@ public class MoikrugStrategy implements Strategy {
     public List<Vacancy> getVacancies(String searchString) {
         ArrayList<Vacancy> res = new ArrayList<Vacancy>();
         String siteName = "https://moikrug.ru";
-        int page = 0;    // JavaRush требует начальную страницу 0, но у сайта реально начальный номер = 1
+        int page = 1;    // JavaRush требует начальную страницу 0, но у сайта реально начальный номер = 1
         while (true) {
             try {
                 Document doc = getDocument(searchString, page);
@@ -70,9 +70,9 @@ public class MoikrugStrategy implements Strategy {
                 page++;
 
                 // for debug from IDE with fake page:
-                if ("http://javarush.ru/testdata/big28data2.html".equals(URL_FORMAT)) {
-                    break;
-                }
+//                if ("http://javarush.ru/testdata/big28data2.html".equals(URL_FORMAT)) {
+//                    break;
+//                }
 
             } catch (IOException e) {
                 //e.printStackTrace();    // ignore
@@ -85,7 +85,7 @@ public class MoikrugStrategy implements Strategy {
         Document doc = Jsoup.connect(String.format(URL_FORMAT, searchString, page))
                 .userAgent(userAgent)
                 .referrer(referrer)
-                //.timeout(timeout)
+                .timeout(timeout)
                 .get();
         //System.out.println(doc.html());
 

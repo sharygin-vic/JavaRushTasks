@@ -66,7 +66,7 @@ public class HHStrategy implements Strategy {
         doc = Jsoup.connect(String.format(URL_FORMAT, searchString, page))
                 .userAgent(userAgent)
                 .referrer(referrer)
-                //.timeout(timeout)
+                .timeout(timeout)
                 .get();
         //System.out.println(doc.html());
 
