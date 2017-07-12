@@ -57,6 +57,9 @@ public class HtmlView implements View {
 //            System.out.println(doc);
 
             for (Vacancy vacancy : vacancies) {
+
+//                System.out.println(vacancy);
+
                 Element vacansyElement = tempNewElement.clone();
                 vacansyElement.getElementsByClass("city").first().appendText(vacancy.getCity());
                 vacansyElement.getElementsByClass("companyName").first().appendText(vacancy.getCompanyName());

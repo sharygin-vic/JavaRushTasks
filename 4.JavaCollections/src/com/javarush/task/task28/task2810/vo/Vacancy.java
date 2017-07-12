@@ -85,4 +85,16 @@ public class Vacancy {
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Vacancy{" +
+                "title='" + title + '\'' +
+                ", salary='" + salary + '\'' +
+                ", city='" + city + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", siteName='" + siteName + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }
