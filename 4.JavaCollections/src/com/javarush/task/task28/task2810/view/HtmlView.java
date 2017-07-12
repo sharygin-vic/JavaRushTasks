@@ -2,6 +2,9 @@ package com.javarush.task.task28.task2810.view;
 
 import com.javarush.task.task28.task2810.Controller;
 import com.javarush.task.task28.task2810.vo.Vacancy;
+
+import java.io.*;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -35,6 +38,18 @@ public class HtmlView implements View {
     }
 
     private void updateFile(String fileContent) {
+        try (
+                //BufferedWriter writer = new BufferedWriter(new FileWriter(Paths.get(filePath).toAbsolutePath().normalize().toFile()))
 
+                // for debug:
+                //BufferedWriter writer = new BufferedWriter(new FileWriter(Paths.get(filePath).getFileName().toAbsolutePath().toFile()))
+
+                // for JavaRush validation !!!!!!!!!!!!!!!!!!!!!!! :
+                BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))
+        ) {
+            writer.write(fileContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
