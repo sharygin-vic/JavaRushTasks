@@ -64,4 +64,23 @@ public class ConsoleHelper {
             }
         }
     }
+
+    public static Operation askOperation() {
+        while (true) {
+            writeMessage("Выберите операцию:");
+            writeMessage("\t1 - INFO");
+            writeMessage("\t2 - DEPOSIT");
+            writeMessage("\t3 - WITHDRAW");
+            writeMessage("\t4 - EXIT");
+            Operation operation;
+            try {
+                operation = Operation.getAllowableOperationByOrdinal(Integer.parseInt(readString()));
+            }
+            catch (IllegalArgumentException e) {
+                writeMessage("Введен некорректный номер операции.");
+                continue;
+            }
+            return operation;
+        }
+    }
 }
