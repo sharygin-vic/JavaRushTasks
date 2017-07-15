@@ -12,7 +12,9 @@ class DepositCommand implements Command {
     @Override
     public void execute() throws InterruptOperationException {
         String currensyCode = ConsoleHelper.askCurrencyCode();
+
         String[] banknotes = ConsoleHelper.getValidTwoDigits(currensyCode);
+
         CurrencyManipulator currencyManipulator = CurrencyManipulatorFactory.getManipulatorByCurrencyCode(currensyCode);
         currencyManipulator.addAmount(Integer.parseInt(banknotes[0]), Integer.parseInt(banknotes[1]));
     }

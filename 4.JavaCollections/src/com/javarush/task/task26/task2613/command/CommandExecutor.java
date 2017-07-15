@@ -17,6 +17,7 @@ public class CommandExecutor {
         allKnownCommandsMap.put(Operation.INFO, new InfoCommand());
         allKnownCommandsMap.put(Operation.WITHDRAW, new WithdrawCommand());
         allKnownCommandsMap.put(Operation.EXIT, new ExitCommand());
+        allKnownCommandsMap.put(Operation.LOGIN, new LoginCommand());
     }
 
     private CommandExecutor() {}
