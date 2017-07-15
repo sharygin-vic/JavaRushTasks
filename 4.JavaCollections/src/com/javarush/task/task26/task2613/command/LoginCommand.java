@@ -17,13 +17,7 @@ import java.util.ResourceBundle;
 public class LoginCommand implements Command {
     private ResourceBundle validCreditCards;
     {
-        // for JavaRush validation:
-        String resourcePath = "./" + CashMachine.class.getPackage().getName().replace('.', '/') + "/resources/verifiedCards.properties";
-
-        //for local testing with IDE:
-        //String resourcePath = "_resources/verifiedCards.properties";
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(resourcePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(CashMachine.RESOURCE_PATH + "verifiedCards.properties"))) {
             validCreditCards = new PropertyResourceBundle(reader);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
