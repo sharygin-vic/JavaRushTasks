@@ -1,14 +1,36 @@
 package com.javarush.task.task26.task2613.command;
 
+import com.javarush.task.task26.task2613.CashMachine;
 import com.javarush.task.task26.task2613.ConsoleHelper;
 import com.javarush.task.task26.task2613.exception.InterruptOperationException;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 
 /**
  * Created by dell on 15-Jul-17.
  */
 public class LoginCommand implements Command {
-    private static final String testCardNum = "123456789012";
-    private static final String testPin = "1234";
+    private ResourceBundle validCreditCards;
+    {
+        // for JavaRush validation:
+        String resourcePath = "./" + CashMachine.class.getPackage().getName().replace('.', '/') + "/resources/verifiedCards.properties";
+
+        //for local testing with IDE:
+        //String resourcePath = "_resources/verifiedCards.properties";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(resourcePath))) {
+            validCreditCards = new PropertyResourceBundle(reader);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void execute() throws InterruptOperationException {
@@ -34,11 +56,11 @@ public class LoginCommand implements Command {
     }
 
     private boolean cardIsOk(String number, String pin) {
-        if (testCardNum.equals(number) && testPin.equals(pin))
-            return true;
-        else {
-            //ConsoleHelper.writeMessage("Неверный номер карты или пин-код.");
-            return false;
-        }
+        boolean res = false;
+        if (validCreditCards.containsKey(number) && pin.equals(validCreditCards.getString(number)))
+            res = true;
+
+        return res;
+
     }
 }
