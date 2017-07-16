@@ -12,16 +12,17 @@ import java.util.ResourceBundle;
 public class ConsoleHelper {
     private static BufferedReader bis = new BufferedReader(new InputStreamReader(System.in));
 
-    private static ResourceBundle res;
-    static {
-        try (BufferedReader reader = new BufferedReader(new FileReader(CashMachine.RESOURCE_PATH + "common_en.properties"))) {
-            res = new PropertyResourceBundle(reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private static ResourceBundle res;
+//    static {
+//        try (BufferedReader reader = new BufferedReader(new FileReader(CashMachine.RESOURCE_PATH + "common_en.properties"))) {
+//            res = new PropertyResourceBundle(reader);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    private static ResourceBundle res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "common_en");
 
     public static void writeMessage(String message) {
         System.out.println(message);
@@ -90,5 +91,9 @@ public class ConsoleHelper {
             }
             return operation;
         }
+    }
+
+    public static void printExitMessage() {
+        writeMessage(res.getString("the.end"));
     }
 }

@@ -15,27 +15,29 @@ import java.util.ResourceBundle;
  * Created by dell on 15-Jul-17.
  */
 public class LoginCommand implements Command {
-    private ResourceBundle validCreditCards;
-    {
-        try (BufferedReader reader = new BufferedReader(new FileReader(CashMachine.RESOURCE_PATH + "verifiedCards.properties"))) {
-            validCreditCards = new PropertyResourceBundle(reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private ResourceBundle validCreditCards;
+//    {
+//        try (BufferedReader reader = new BufferedReader(new FileReader(CashMachine.RESOURCE_PATH + "verifiedCards.properties"))) {
+//            validCreditCards = new PropertyResourceBundle(reader);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    private ResourceBundle validCreditCards = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "verifiedCards");
 
-    private ResourceBundle res;
-    {
-        try (BufferedReader reader = new BufferedReader(new FileReader(CashMachine.RESOURCE_PATH + "login_en.properties"))) {
-            res = new PropertyResourceBundle(reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private ResourceBundle res;
+//    {
+//        try (BufferedReader reader = new BufferedReader(new FileReader(CashMachine.RESOURCE_PATH + "login_en.properties"))) {
+//            res = new PropertyResourceBundle(reader);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    private ResourceBundle res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "login_en");
 
     @Override
     public void execute() throws InterruptOperationException {

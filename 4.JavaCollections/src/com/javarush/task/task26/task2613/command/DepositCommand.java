@@ -17,16 +17,17 @@ import java.util.ResourceBundle;
  * Created by dell on 14-Jul-17.
  */
 class DepositCommand implements Command {
-    private ResourceBundle res;
-    {
-        try (BufferedReader reader = new BufferedReader(new FileReader(CashMachine.RESOURCE_PATH + "deposit_en.properties"))) {
-            res = new PropertyResourceBundle(reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private ResourceBundle res;
+//    {
+//        try (BufferedReader reader = new BufferedReader(new FileReader(CashMachine.RESOURCE_PATH + "deposit_en.properties"))) {
+//            res = new PropertyResourceBundle(reader);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    private ResourceBundle res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "deposit_en");
 
     @Override
     public void execute() throws InterruptOperationException {
