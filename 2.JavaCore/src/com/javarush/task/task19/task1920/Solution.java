@@ -13,6 +13,8 @@ public class Solution {
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(args[0]));
+        //BufferedReader reader = new BufferedReader(new StringReader("Петров 0.501\nИванов 1.35\nПетров 0.85"));
+
         String line;
         while ((line = reader.readLine()) != null) {
             String[] result = line.split("\\s");
