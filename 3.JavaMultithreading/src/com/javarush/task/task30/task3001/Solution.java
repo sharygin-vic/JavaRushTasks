@@ -15,6 +15,19 @@ public class Solution {
         result = convertNumberToOtherNumerationSystem(number, NumerationSystemType._8);
         System.out.println(result);    //expected 3337
 
+
+//        number = new Number(NumerationSystemType._12, "6a8b");
+//        result = convertNumberToOtherNumerationSystem(number, NumerationSystemType._16);
+//        System.out.println(result);
+//
+//        number = new Number(NumerationSystemType._12, "-12");
+//        result = convertNumberToOtherNumerationSystem(number, NumerationSystemType._16);
+//        System.out.println(result);
+
+//        number = new Number(NumerationSystemType._2, "120");
+//        result = convertNumberToOtherNumerationSystem(number, NumerationSystemType._10);
+//        System.out.println(result);
+
 //        number = new Number(NumerationSystemType._12, "6ac");
 //        result = convertNumberToOtherNumerationSystem(number, NumerationSystemType._16);
 //        System.out.println(result);
@@ -37,22 +50,17 @@ public class Solution {
 
     public static Number convertNumberToOtherNumerationSystem(Number number, NumerationSystem expectedNumerationSystem) {
         //напишите тут ваш код
-        if (number == null || number.getDigit() == null || number.getNumerationSystem() == null || expectedNumerationSystem == null) {
-            throw new NumberFormatException();
-        }
 
         int srcRadix = number.getNumerationSystem().getNumerationSystemIntValue();
         int destRadix = expectedNumerationSystem.getNumerationSystemIntValue();
-        int decVal;
-        if (srcRadix == 10) {
-            decVal = Integer.parseInt(number.getDigit());
-        }
-        else {
-            decVal = Integer.parseInt(number.getDigit(), srcRadix);
-        }
-        String outS = Integer.toUnsignedString(decVal, destRadix);
-        Number res = new Number(expectedNumerationSystem, outS);
 
+//        long decVal = Long.parseLong(number.getDigit(), srcRadix);
+//        String outS = Long.toUnsignedString(decVal, destRadix);
+
+        BigInteger decVal = new BigInteger(number.getDigit(), srcRadix);
+        String outS = decVal.toString(destRadix);
+
+        Number res = new Number(expectedNumerationSystem, outS);
         return res;
     }
 }
