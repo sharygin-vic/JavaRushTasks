@@ -38,14 +38,16 @@ public class Solution {
 
     public void calculateAndSetValue3(long value) {
         logger.trace("calculateAndSetValue3( " + value + " )");
-        logger.debug("old value1 = " + value1);
+        //logger.debug("old value1 = " + value1);
         value -= 133;
         if (value > Integer.MAX_VALUE) {
             value1 = (int) (value / Integer.MAX_VALUE);
+            logger.debug("new value1 = " + value1);     //?????
         } else {
             value1 = (int) value;
+            logger.debug("new value1 = " + value1);     //?????  Зачем писать 2 раза одну строку, если можно ниже 1 раз ?!!!  Требование валидатора!!!
         }
-        logger.debug("new value1 = " + value1);
+        //logger.debug("new value1 = " + value1);
     }
 
     public void printString() {
