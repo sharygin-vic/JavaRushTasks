@@ -17,7 +17,7 @@ public class Solution {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        solution.sendMail("send.from@gmail.com", "password.send.from", "send.to@xxx.xxx");
+        //solution.sendMail("send.from@gmail.com", "password.send.from", "send.to@xxx.xxx");
     }
 
     public void sendMail(final String username, final String password, final String recipients) {
@@ -40,7 +40,7 @@ public class Solution {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
 
             setSubject(message, "Тестовое письмо");
-            setAttachment(message, "c:/text.txt");
+            setAttachment(message, "c:/r/email_send_text.txt");
 
             Transport.send(message);
             System.out.println("Письмо было отправлено.");

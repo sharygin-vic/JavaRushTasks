@@ -1,7 +1,5 @@
 package com.javarush.task.task36.task3605;
 
-import org.omg.CORBA.StringValueHelper;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;

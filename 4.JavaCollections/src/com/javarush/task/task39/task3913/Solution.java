@@ -6,7 +6,7 @@ import java.util.Date;
 public class Solution {
     public static void main(String[] args) {
         System.out.println("==========  IPQuery  ============");
-        LogParser logParser = new LogParser(Paths.get("c:/logs/"));
+        LogParser logParser = new LogParser(Paths.get("c:/r/logs/"));
         System.out.println(logParser.getNumberOfUniqueIPs(null, new Date()));
 
         Event event = Event.DONE_TASK;

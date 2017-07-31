@@ -88,10 +88,10 @@ public class HtmlView implements View {
 
     protected Document getDocument() throws IOException {
         // for debug from IDE:
-        //return Jsoup.parse(Paths.get(filePath).getFileName().toAbsolutePath().toFile(), "UTF-8");
+        return Jsoup.parse(Paths.get(filePath).getFileName().toAbsolutePath().toFile(), "UTF-8");
 
         // for JavaRush validation !!!!!!!!!!!!!!!!!!!!!!! :
-        return Jsoup.parse(new File(filePath), "UTF-8");
+        //return Jsoup.parse(new File(filePath), "UTF-8");
     }
 
     private void updateFile(String fileContent) {
@@ -102,10 +102,10 @@ public class HtmlView implements View {
                 //////BufferedWriter writer = new BufferedWriter(new FileWriter(Paths.get(filePath).toAbsolutePath().normalize().toFile()))
 
                 // for debug from IDE:
-                //BufferedWriter writer = new BufferedWriter(new FileWriter(Paths.get(filePath).getFileName().toAbsolutePath().toFile()))
+                BufferedWriter writer = new BufferedWriter(new FileWriter(Paths.get(filePath).getFileName().toAbsolutePath().toFile()))
 
                 // for JavaRush validation !!!!!!!!!!!!!!!!!!!!!!! :
-                BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))
+                //BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))
         ) {
             writer.write(fileContent);
         } catch (IOException e) {
